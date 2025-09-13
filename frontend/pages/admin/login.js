@@ -172,20 +172,6 @@ export default function AdminLogin() {
 
                     {/* Footer Links */}
                     <div className="text-center space-y-4 mt-8">
-                        <p className="text-sm text-gray-400">
-                            Don't have an admin account?{' '}
-                            <Link href="/admin/register" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">
-                                Register here
-                            </Link>
-                        </p>
-
-                        <div className="flex items-center justify-center space-x-4 text-xs text-gray-500">
-                            <span className="flex items-center space-x-1">
-                                <span>Backend:</span>
-                                <span className="font-mono bg-gray-800/50 px-2 py-1 rounded">{api}</span>
-                            </span>
-                        </div>
-
                         <Link href="/" className="inline-flex items-center space-x-2 text-gray-400 hover:text-white transition-colors">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
