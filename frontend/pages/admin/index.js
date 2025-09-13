@@ -686,17 +686,6 @@ function AdminDashboard() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">Title</label>
-                                <input
-                                    type="text"
-                                    value={profile.title}
-                                    onChange={(e) => setProfile(prev => ({ ...prev, title: e.target.value }))}
-                                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                    placeholder="e.g., Full Stack Developer"
-                                />
-                            </div>
-
-                            <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">Bio (Homepage Description)</label>
                                 <textarea
                                     value={profile.bio}

@@ -32,7 +32,6 @@ const Navbar = ({ profile }) => {
     const navLinks = [
         { href: '#about', label: 'About' },
         { href: '#projects', label: 'Projects' },
-        { href: '/admin', label: 'Admin' },
     ];
 
     return (
