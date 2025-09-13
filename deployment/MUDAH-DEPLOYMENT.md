@@ -77,25 +77,61 @@
 1. Klik "Deploy from GitHub repo"
 2. Pilih repository: `porto-app`
 3. Klik "Deploy Now"
-4. Tunggu proses deployment...
+4. **PENTING**: Setelah deploy, Railway mungkin error karena tidak detect build method
+
+### Setup Root Directory & Build
+
+1. Di Railway dashboard, klik project Anda
+2. Klik tab "Settings"
+3. Scroll ke "Deploy"
+4. **Root Directory**: `backend` (WAJIB diisi!)
+5. **Build Command**: `npm install`
+6. **Start Command**: `npm start`
+7. Klik "Save"
 
 ### Setup Environment Variables
 
-1. Setelah deploy selesai, klik project Anda
-2. Klik tab "Variables"
-3. Tambahkan environment variables:
-   ```
-   MONGO_URI = mongodb+srv://portfolio:PASSWORD@portfolio.xxxxx.mongodb.net/portfolio
-   JWT_SECRET = your-super-secret-jwt-key-12345
-   PORT = 5000
-   NODE_ENV = production
-   ```
-4. Klik "Save"
+1. Klik tab "Variables"
+2. Tambahkan environment variables satu per satu:
+
+**Variable 1:**
+```
+Name: MONGO_URI
+Value: mongodb+srv://portofolio:1rwNr0ZRRIPPT29w@portofolio.wdg71al.mongodb.net/portfolio
+```
+
+**Variable 2:**
+```
+Name: JWT_SECRET
+Value: hosea-portfolio-secret-key-2025
+```
+
+**Variable 3:**
+```
+Name: PORT
+Value: 5000
+```
+
+**Variable 4:**
+```
+Name: NODE_ENV
+Value: production
+```
+
+4. Klik "Save" setelah setiap variable
+
+### Redeploy
+
+1. Klik tab "Deployments"
+2. Klik "Deploy Latest Commit" atau "Redeploy"
+3. Tunggu proses deployment (5-10 menit)
+4. Pastikan status "SUCCESS"
 
 ### Test Backend
 
-1. Di dashboard Railway, copy URL backend Anda (contoh: `https://porto-app-production.up.railway.app`)
-2. Test di browser: `https://your-url.railway.app/api/profile`
+1. Copy URL backend dari Railway (contoh: `https://porto-app-production.up.railway.app`)
+2. Test di browser: `https://your-railway-url/api/profile`
+3. Harus muncul JSON response `{}` atau data profile
 
 ✅ **SAVE BACKEND URL INI - NANTI DIPAKAI!**
 
@@ -131,7 +167,44 @@
 
 ---
 
-## 🎉 Hasil Akhir:
+## � Troubleshooting Railway Error
+
+### Error: "Railpack could not determine how to build the app"
+
+**SOLUSI:**
+
+1. **Set Root Directory:**
+   - Di Railway dashboard → Settings
+   - Root Directory: `backend`
+   - Build Command: `npm install`
+   - Start Command: `npm start`
+
+2. **Redeploy:**
+   - Klik tab "Deployments"
+   - Klik "Deploy Latest Commit"
+
+3. **Check Logs:**
+   - Klik deployment yang sedang berjalan
+   - Lihat "Deploy Logs" untuk error details
+
+### Error Umum Lainnya:
+
+**Backend tidak start:**
+- Check environment variables (MONGO_URI, JWT_SECRET, PORT)
+- Pastikan MongoDB Atlas network access allow dari anywhere
+- Check Railway service logs
+
+**Frontend tidak konek ke backend:**
+- Pastikan NEXT_PUBLIC_API_URL benar
+- Test backend URL manual: `{railway-url}/api/profile`
+- Check CORS settings di backend
+
+**Database connection failed:**
+- Verify MongoDB connection string
+- Check username/password
+- Ensure network access configured di MongoDB Atlas
+
+## �🎉 Hasil Akhir:
 
 - **Frontend**: https://porto-app.vercel.app
 - **Backend API**: https://porto-app.railway.app/api
@@ -145,9 +218,10 @@
 - **MongoDB Atlas**: GRATIS (512MB storage)
 - **Total**: Rp 0 / bulan
 
-## 🆘 Jika Ada Masalah:
+## 🆘 Jika Masih Stuck:
 
-1. Check logs di Railway dashboard
-2. Check environment variables
-3. Test API endpoint manual
-4. Hubungi saya jika stuck!
+1. Screenshot error yang muncul
+2. Check Railway deployment logs
+3. Verify semua environment variables
+4. Test API endpoint manual
+5. Hubungi saya dengan detail error!
