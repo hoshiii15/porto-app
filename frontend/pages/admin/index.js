@@ -16,6 +16,7 @@ function AdminDashboard() {
         name: '',
         title: '',
         description: '',
+        bio: '',
         email: '',
         phone: '',
         location: ''
@@ -529,6 +530,17 @@ function AdminDashboard() {
                             </div>
 
                             <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">Bio (Homepage Description)</label>
+                                <textarea
+                                    value={profile.bio}
+                                    onChange={(e) => setProfile(prev => ({ ...prev, bio: e.target.value }))}
+                                    rows={3}
+                                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                                    placeholder="A brief and catchy description for your homepage..."
+                                />
+                            </div>
+
+                            <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
                                 <input
                                     type="email"
@@ -562,13 +574,13 @@ function AdminDashboard() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">Description</label>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">Description (About Page)</label>
                                 <textarea
                                     value={profile.description}
                                     onChange={(e) => setProfile(prev => ({ ...prev, description: e.target.value }))}
                                     rows={4}
                                     className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
-                                    placeholder="Tell us about yourself..."
+                                    placeholder="Detailed information about your skills and experience..."
                                 />
                             </div>
 
