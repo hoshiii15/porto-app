@@ -10,7 +10,21 @@ const projectRoutes = require('./routes/projectRoutes')
 const socialLinkRoutes = require('./routes/socialLinkRoutes')
 
 const app = express()
-app.use(cors())
+
+// CORS configuration for production
+const corsOptions = {
+    origin: [
+        'http://localhost:3000',
+        'https://porto-app-iota.vercel.app',
+        'https://porto-app.vercel.app',
+        /vercel\.app$/,  // Allow all vercel.app subdomains
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}
+
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
