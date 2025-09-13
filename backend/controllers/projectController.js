@@ -12,107 +12,131 @@ exports.getProject = async (req, res) => {
 }
 
 exports.createProject = async (req, res) => {
-    const data = req.body || {}
+    try {
+        const data = req.body || {}
 
-    // Handle tags - check if they come as array fields (tags[0], tags[1], etc.)
-    const tags = [];
-    Object.keys(data).forEach(key => {
-        if (key.startsWith('tags[') && key.endsWith(']')) {
-            tags.push(data[key]);
-            delete data[key]; // Remove the individual tag fields
-        }
-    });
-
-    if (tags.length > 0) {
-        data.tags = tags.filter(tag => tag && tag.trim());
-    } else if (data.tags) {
-        // Fallback for old JSON format or direct array
-        if (typeof data.tags === 'string') {
-            try {
-                // Try to parse as JSON first
-                let parsed = JSON.parse(data.tags)
-
-                // If it's still a string after parsing, try parsing again (double encoded)
-                if (typeof parsed === 'string') {
-                    parsed = JSON.parse(parsed)
-                }
-
-                // If it's an array, use it directly
-                if (Array.isArray(parsed)) {
-                    data.tags = parsed.filter(tag => tag && tag.trim())
-                } else if (typeof parsed === 'string') {
-                    // If still string, split by comma
-                    data.tags = parsed.split(',').map(tag => tag.trim()).filter(tag => tag)
-                }
-            } catch (error) {
-                // If all parsing fails, split by comma as fallback
-                data.tags = data.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
+        // Handle tags - check if they come as array fields (tags[0], tags[1], etc.)
+        const tags = [];
+        Object.keys(data).forEach(key => {
+            if (key.startsWith('tags[') && key.endsWith(']')) {
+                tags.push(data[key]);
+                delete data[key]; // Remove the individual tag fields
             }
-        } else if (Array.isArray(data.tags)) {
-            // If it's already an array, clean it up
-            data.tags = data.tags.filter(tag => tag && tag.trim())
-        }
-    }
+        });
 
-    if (req.file) {
-        // expose via /uploads
-        data.imageUrl = `/uploads/${req.file.filename}`
+        if (tags.length > 0) {
+            data.tags = tags.filter(tag => tag && tag.trim());
+        } else if (data.tags) {
+            // Fallback for old JSON format or direct array
+            if (typeof data.tags === 'string') {
+                try {
+                    // Try to parse as JSON first
+                    let parsed = JSON.parse(data.tags)
+
+                    // If it's still a string after parsing, try parsing again (double encoded)
+                    if (typeof parsed === 'string') {
+                        parsed = JSON.parse(parsed)
+                    }
+
+                    // If it's an array, use it directly
+                    if (Array.isArray(parsed)) {
+                        data.tags = parsed.filter(tag => tag && tag.trim())
+                    } else if (typeof parsed === 'string') {
+                        // If still string, split by comma
+                        data.tags = parsed.split(',').map(tag => tag.trim()).filter(tag => tag)
+                    }
+                } catch (error) {
+                    // If all parsing fails, split by comma as fallback
+                    data.tags = data.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
+                }
+            } else if (Array.isArray(data.tags)) {
+                // If it's already an array, clean it up
+                data.tags = data.tags.filter(tag => tag && tag.trim())
+            }
+        }
+
+        if (req.file) {
+            // Check if file exists before setting imageUrl
+            const fs = require('fs')
+            if (fs.existsSync(req.file.path)) {
+                data.imageUrl = `/uploads/${req.file.filename}`
+            } else {
+                console.warn('Uploaded file not found:', req.file.path)
+            }
+        }
+        
+        const project = new Project(data)
+        await project.save()
+        res.json(project)
+    } catch (error) {
+        console.error('Error creating project:', error)
+        res.status(500).json({ message: 'Failed to create project', error: error.message })
     }
-    const project = new Project(data)
-    await project.save()
-    res.json(project)
 }
 
 exports.updateProject = async (req, res) => {
-    const p = await Project.findById(req.params.id)
-    if (!p) return res.status(404).json({ message: 'Not found' })
+    try {
+        const p = await Project.findById(req.params.id)
+        if (!p) return res.status(404).json({ message: 'Not found' })
 
-    const data = req.body || {}
+        const data = req.body || {}
 
-    // Handle tags - check if they come as array fields (tags[0], tags[1], etc.)
-    const tags = [];
-    Object.keys(data).forEach(key => {
-        if (key.startsWith('tags[') && key.endsWith(']')) {
-            tags.push(data[key]);
-            delete data[key]; // Remove the individual tag fields
-        }
-    });
-
-    if (tags.length > 0) {
-        data.tags = tags.filter(tag => tag && tag.trim());
-    } else if (data.tags) {
-        // Fallback for old JSON format or direct array
-        if (typeof data.tags === 'string') {
-            try {
-                // Try to parse as JSON first
-                let parsed = JSON.parse(data.tags)
-
-                // If it's still a string after parsing, try parsing again (double encoded)
-                if (typeof parsed === 'string') {
-                    parsed = JSON.parse(parsed)
-                }
-
-                // If it's an array, use it directly
-                if (Array.isArray(parsed)) {
-                    data.tags = parsed.filter(tag => tag && tag.trim())
-                } else if (typeof parsed === 'string') {
-                    // If still string, split by comma
-                    data.tags = parsed.split(',').map(tag => tag.trim()).filter(tag => tag)
-                }
-            } catch (error) {
-                // If all parsing fails, split by comma as fallback
-                data.tags = data.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
+        // Handle tags - check if they come as array fields (tags[0], tags[1], etc.)
+        const tags = [];
+        Object.keys(data).forEach(key => {
+            if (key.startsWith('tags[') && key.endsWith(']')) {
+                tags.push(data[key]);
+                delete data[key]; // Remove the individual tag fields
             }
-        } else if (Array.isArray(data.tags)) {
-            // If it's already an array, clean it up
-            data.tags = data.tags.filter(tag => tag && tag.trim())
-        }
-    }
+        });
 
-    Object.assign(p, data)
-    if (req.file) p.imageUrl = `/uploads/${req.file.filename}`
-    await p.save()
-    res.json(p)
+        if (tags.length > 0) {
+            data.tags = tags.filter(tag => tag && tag.trim());
+        } else if (data.tags) {
+            // Fallback for old JSON format or direct array
+            if (typeof data.tags === 'string') {
+                try {
+                    // Try to parse as JSON first
+                    let parsed = JSON.parse(data.tags)
+
+                    // If it's still a string after parsing, try parsing again (double encoded)
+                    if (typeof parsed === 'string') {
+                        parsed = JSON.parse(parsed)
+                    }
+
+                    // If it's an array, use it directly
+                    if (Array.isArray(parsed)) {
+                        data.tags = parsed.filter(tag => tag && tag.trim())
+                    } else if (typeof parsed === 'string') {
+                        // If still string, split by comma
+                        data.tags = parsed.split(',').map(tag => tag.trim()).filter(tag => tag)
+                    }
+                } catch (error) {
+                    // If all parsing fails, split by comma as fallback
+                    data.tags = data.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
+                }
+            } else if (Array.isArray(data.tags)) {
+                // If it's already an array, clean it up
+                data.tags = data.tags.filter(tag => tag && tag.trim())
+            }
+        }
+
+        Object.assign(p, data)
+        if (req.file) {
+            // Check if file exists before setting imageUrl
+            const fs = require('fs')
+            if (fs.existsSync(req.file.path)) {
+                p.imageUrl = `/uploads/${req.file.filename}`
+            } else {
+                console.warn('Uploaded file not found:', req.file.path)
+            }
+        }
+        await p.save()
+        res.json(p)
+    } catch (error) {
+        console.error('Error updating project:', error)
+        res.status(500).json({ message: 'Failed to update project', error: error.message })
+    }
 }
 
 exports.deleteProject = async (req, res) => {

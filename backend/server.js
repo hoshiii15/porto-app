@@ -3,6 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const path = require('path')
+const fs = require('fs')
 
 const authRoutes = require('./routes/authRoutes')
 const profileRoutes = require('./routes/profileRoutes')
@@ -11,6 +12,13 @@ const socialLinkRoutes = require('./routes/socialLinkRoutes')
 const skillRoutes = require('./routes/skillRoutes')
 
 const app = express()
+
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, 'uploads')
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true })
+    console.log('Created uploads directory')
+}
 
 // CORS configuration for production
 const corsOptions = {
