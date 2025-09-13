@@ -22,6 +22,14 @@ function AdminDashboard() {
         location: ''
     });
     const [isProfileFormOpen, setIsProfileFormOpen] = useState(false);
+    const [skills, setSkills] = useState([]);
+    const [isSkillFormOpen, setIsSkillFormOpen] = useState(false);
+    const [editingSkill, setEditingSkill] = useState(null);
+    const [newSkill, setNewSkill] = useState({
+        name: '',
+        level: 50,
+        color: 'from-blue-500 to-blue-600'
+    });
     const router = useRouter();
     const api = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
@@ -92,16 +100,22 @@ function AdminDashboard() {
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const [projectsRes, socialRes, profileRes] = await Promise.all([
+            const [projectsRes, socialRes, profileRes, skillsRes] = await Promise.all([
                 getProjects(),
                 getSocialLinks(),
-                getProfile()
+                getProfile(),
+                fetch(`${api}/api/skills`)
             ]);
 
             setProjects(projectsRes.data);
             setSocialLinks(socialRes.data || []);
             if (profileRes.data) {
                 setProfile(profileRes.data);
+            }
+            
+            if (skillsRes.ok) {
+                const skillsData = await skillsRes.json();
+                setSkills(skillsData);
             }
         } catch (error) {
             console.error('Failed to fetch data:', error);
@@ -147,6 +161,96 @@ function AdminDashboard() {
             console.error('Failed to update profile:', error);
             alert('Failed to update profile');
         }
+    };
+
+    // Skills Management Functions
+    const handleCreateSkill = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(`${api}/api/skills`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newSkill)
+            });
+
+            if (response.ok) {
+                await fetchData();
+                setNewSkill({ name: '', level: 50, color: 'from-blue-500 to-blue-600' });
+                setIsSkillFormOpen(false);
+            } else {
+                alert('Failed to create skill');
+            }
+        } catch (error) {
+            console.error('Error creating skill:', error);
+            alert('Error creating skill');
+        }
+    };
+
+    const handleUpdateSkill = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(`${api}/api/skills/${editingSkill._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newSkill)
+            });
+
+            if (response.ok) {
+                await fetchData();
+                setEditingSkill(null);
+                setNewSkill({ name: '', level: 50, color: 'from-blue-500 to-blue-600' });
+                setIsSkillFormOpen(false);
+            } else {
+                alert('Failed to update skill');
+            }
+        } catch (error) {
+            console.error('Error updating skill:', error);
+            alert('Error updating skill');
+        }
+    };
+
+    const handleDeleteSkill = async (skillId) => {
+        if (!confirm('Are you sure you want to delete this skill?')) return;
+
+        try {
+            const response = await fetch(`${api}/api/skills/${skillId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                await fetchData();
+            } else {
+                alert('Failed to delete skill');
+            }
+        } catch (error) {
+            console.error('Error deleting skill:', error);
+            alert('Error deleting skill');
+        }
+    };
+
+    const openSkillForm = (skill = null) => {
+        if (skill) {
+            setEditingSkill(skill);
+            setNewSkill({
+                name: skill.name,
+                level: skill.level,
+                color: skill.color
+            });
+        } else {
+            setEditingSkill(null);
+            setNewSkill({ name: '', level: 50, color: 'from-blue-500 to-blue-600' });
+        }
+        setIsSkillFormOpen(true);
+    };
+
+    const closeSkillForm = () => {
+        setIsSkillFormOpen(false);
+        setEditingSkill(null);
+        setNewSkill({ name: '', level: 50, color: 'from-blue-500 to-blue-600' });
     };
 
     const handleCreateProject = async (formData) => {
@@ -351,8 +455,8 @@ function AdminDashboard() {
                                 <p className="text-white font-medium">{profile.name || 'Not set'}</p>
                             </div>
                             <div>
-                                <label className="text-gray-400 text-sm">Title</label>
-                                <p className="text-white font-medium">{profile.title || 'Not set'}</p>
+                                <label className="text-gray-400 text-sm">Bio (Homepage Description)</label>
+                                <p className="text-white font-medium">{profile.bio || 'Not set'}</p>
                             </div>
                             <div>
                                 <label className="text-gray-400 text-sm">Email</label>
@@ -363,7 +467,7 @@ function AdminDashboard() {
                                 <p className="text-white font-medium">{profile.location || 'Not set'}</p>
                             </div>
                             <div>
-                                <label className="text-gray-400 text-sm">Description</label>
+                                <label className="text-gray-400 text-sm">Description (About Page)</label>
                                 <p className="text-white font-medium line-clamp-3">{profile.description || 'Not set'}</p>
                             </div>
                         </div>
@@ -448,6 +552,69 @@ function AdminDashboard() {
                                     <p className="text-gray-500 text-center py-8">No social links added yet.</p>
                                 )}
                             </div>
+                        </div>
+                    </div>
+
+                    {/* Skills & Expertise Management */}
+                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300">
+                        <div className="flex items-center space-x-3 mb-6">
+                            <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
+                                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                            </div>
+                            <h2 className="text-xl font-bold text-white">Skills & Expertise</h2>
+                            <button
+                                onClick={() => openSkillForm()}
+                                className="ml-auto inline-flex items-center space-x-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-4 py-2 rounded-xl font-medium transition-all duration-300 transform hover:scale-105"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                </svg>
+                                <span>Add Skill</span>
+                            </button>
+                        </div>
+
+                        <div className="space-y-4">
+                            {skills.map((skill) => (
+                                <div key={skill._id} className="bg-gray-900/50 rounded-xl p-4 border border-gray-600/30">
+                                    <div className="flex justify-between items-start mb-3">
+                                        <div className="flex-1">
+                                            <h3 className="font-medium text-white">{skill.name}</h3>
+                                            <div className="flex items-center space-x-2 mt-2">
+                                                <div className="flex-1 bg-gray-700 rounded-full h-2">
+                                                    <div 
+                                                        className={`h-2 bg-gradient-to-r ${skill.color} rounded-full transition-all duration-300`}
+                                                        style={{ width: `${skill.level}%` }}
+                                                    ></div>
+                                                </div>
+                                                <span className="text-sm text-gray-400 min-w-[3rem]">{skill.level}%</span>
+                                            </div>
+                                        </div>
+                                        <div className="flex space-x-2 ml-4">
+                                            <button
+                                                onClick={() => openSkillForm(skill)}
+                                                className="text-blue-400 hover:text-blue-300 transition-colors"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                </svg>
+                                            </button>
+                                            <button
+                                                onClick={() => handleDeleteSkill(skill._id)}
+                                                className="text-red-400 hover:text-red-300 transition-colors"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                            {skills.length === 0 && (
+                                <p className="text-gray-500 text-center py-8">No skills added yet.</p>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -594,6 +761,89 @@ function AdminDashboard() {
                                 <button
                                     type="button"
                                     onClick={() => setIsProfileFormOpen(false)}
+                                    className="flex-1 bg-gray-600 hover:bg-gray-500 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Skills Form Modal */}
+            {isSkillFormOpen && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                    <div className="bg-gray-800 rounded-2xl p-6 w-full max-w-md">
+                        <div className="flex justify-between items-center mb-6">
+                            <h3 className="text-xl font-bold text-white">
+                                {editingSkill ? 'Edit Skill' : 'Add New Skill'}
+                            </h3>
+                            <button
+                                onClick={closeSkillForm}
+                                className="text-gray-400 hover:text-white"
+                            >
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <form onSubmit={editingSkill ? handleUpdateSkill : handleCreateSkill} className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">Skill Name</label>
+                                <input
+                                    type="text"
+                                    value={newSkill.name}
+                                    onChange={(e) => setNewSkill(prev => ({ ...prev, name: e.target.value }))}
+                                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                    placeholder="e.g., Frontend Development"
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                    Level: {newSkill.level}%
+                                </label>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    value={newSkill.level}
+                                    onChange={(e) => setNewSkill(prev => ({ ...prev, level: parseInt(e.target.value) }))}
+                                    className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">Color Theme</label>
+                                <select
+                                    value={newSkill.color}
+                                    onChange={(e) => setNewSkill(prev => ({ ...prev, color: e.target.value }))}
+                                    className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                >
+                                    <option value="from-blue-500 to-blue-600">Blue</option>
+                                    <option value="from-green-500 to-green-600">Green</option>
+                                    <option value="from-purple-500 to-purple-600">Purple</option>
+                                    <option value="from-pink-500 to-pink-600">Pink</option>
+                                    <option value="from-yellow-500 to-yellow-600">Yellow</option>
+                                    <option value="from-red-500 to-red-600">Red</option>
+                                    <option value="from-indigo-500 to-indigo-600">Indigo</option>
+                                    <option value="from-cyan-500 to-cyan-600">Cyan</option>
+                                </select>
+                            </div>
+
+                            <div className="flex space-x-4 pt-4">
+                                <button
+                                    type="submit"
+                                    className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300"
+                                >
+                                    {editingSkill ? 'Update Skill' : 'Add Skill'}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={closeSkillForm}
                                     className="flex-1 bg-gray-600 hover:bg-gray-500 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300"
                                 >
                                     Cancel

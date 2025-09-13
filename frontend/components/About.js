@@ -5,40 +5,79 @@ const About = ({ profile }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [animatedText, setAnimatedText] = useState('');
     const [projectCount, setProjectCount] = useState(0);
+    const [hasAnimated, setHasAnimated] = useState(false);
+    const [skills, setSkills] = useState([]);
     const sectionRef = useRef(null);
+    const timerRef = useRef(null);
 
     const bio = profile?.description || profile?.bio || 'Detailed information about your skills, experience, and passion for development.';
 
     useEffect(() => {
-        // Fetch project count
-        const fetchProjectCount = async () => {
+        // Fetch project count and skills
+        const fetchData = async () => {
             try {
-                const response = await getProjects();
-                setProjectCount(response.data.length);
+                const [projectsResponse, skillsResponse] = await Promise.all([
+                    getProjects(),
+                    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/skills`)
+                ]);
+                
+                setProjectCount(projectsResponse.data.length);
+                
+                if (skillsResponse.ok) {
+                    const skillsData = await skillsResponse.json();
+                    setSkills(skillsData);
+                } else {
+                    // Fallback to default skills if API fails
+                    setSkills([
+                        { name: 'Frontend Development', level: 90, color: 'from-blue-500 to-blue-600' },
+                        { name: 'Backend Development', level: 85, color: 'from-green-500 to-green-600' },
+                        { name: 'Database Design', level: 80, color: 'from-purple-500 to-purple-600' },
+                        { name: 'UI/UX Design', level: 75, color: 'from-pink-500 to-pink-600' },
+                    ]);
+                }
             } catch (error) {
-                console.error('Failed to fetch projects:', error);
+                console.error('Failed to fetch data:', error);
                 setProjectCount(0);
+                // Fallback to default skills
+                setSkills([
+                    { name: 'Frontend Development', level: 90, color: 'from-blue-500 to-blue-600' },
+                    { name: 'Backend Development', level: 85, color: 'from-green-500 to-green-600' },
+                    { name: 'Database Design', level: 80, color: 'from-purple-500 to-purple-600' },
+                    { name: 'UI/UX Design', level: 75, color: 'from-pink-500 to-pink-600' },
+                ]);
             }
         };
 
-        fetchProjectCount();
+        fetchData();
     }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting) {
+                if (entry.isIntersecting && !hasAnimated) {
                     setIsVisible(true);
+                    setHasAnimated(true);
                     // Animate text typing effect
                     const text = bio;
                     let index = 0;
-                    const timer = setInterval(() => {
+                    
+                    // Clear any existing timer
+                    if (timerRef.current) {
+                        clearInterval(timerRef.current);
+                    }
+                    
+                    timerRef.current = setInterval(() => {
                         setAnimatedText(text.slice(0, index));
                         index++;
                         if (index > text.length) {
-                            clearInterval(timer);
+                            clearInterval(timerRef.current);
+                            timerRef.current = null;
                         }
                     }, 30);
+                } else if (entry.isIntersecting && hasAnimated) {
+                    // If already animated, just show the full text
+                    setIsVisible(true);
+                    setAnimatedText(bio);
                 }
             },
             { threshold: 0.3 }
@@ -48,15 +87,13 @@ const About = ({ profile }) => {
             observer.observe(sectionRef.current);
         }
 
-        return () => observer.disconnect();
-    }, [bio]);
-
-    const skills = [
-        { name: 'Frontend Development', level: 90, color: 'from-blue-500 to-blue-600' },
-        { name: 'Backend Development', level: 85, color: 'from-green-500 to-green-600' },
-        { name: 'Database Design', level: 80, color: 'from-purple-500 to-purple-600' },
-        { name: 'UI/UX Design', level: 75, color: 'from-pink-500 to-pink-600' },
-    ];
+        return () => {
+            observer.disconnect();
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+            }
+        };
+    }, [bio, hasAnimated]);
 
     return (
         <section id="about" className="py-20 bg-gradient-to-br from-gray-800 via-gray-900 to-black relative overflow-hidden" ref={sectionRef}>

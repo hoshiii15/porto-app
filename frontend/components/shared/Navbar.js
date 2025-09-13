@@ -91,7 +91,7 @@ const Navbar = ({ profile }) => {
                 {/* Mobile Menu */}
                 <div className={`md:hidden transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
                     }`}>
-                    <div className="py-4 space-y-2 border-t border-gray-800/50">
+                    <div className="py-4 space-y-2 border-t border-gray-800/50 bg-gray-900/95 backdrop-blur-xl rounded-b-xl">
                         {navLinks.map((link, index) => (
                             <a
                                 key={link.href}

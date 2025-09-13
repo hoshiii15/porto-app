@@ -8,6 +8,7 @@ const authRoutes = require('./routes/authRoutes')
 const profileRoutes = require('./routes/profileRoutes')
 const projectRoutes = require('./routes/projectRoutes')
 const socialLinkRoutes = require('./routes/socialLinkRoutes')
+const skillRoutes = require('./routes/skillRoutes')
 
 const app = express()
 
@@ -32,6 +33,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/profile', profileRoutes)
 app.use('/api/projects', projectRoutes)
 app.use('/api/social-links', socialLinkRoutes)
+app.use('/api/skills', skillRoutes)
 
 const PORT = process.env.PORT || 5000
 const mongoUri = process.env.MONGO_URI
