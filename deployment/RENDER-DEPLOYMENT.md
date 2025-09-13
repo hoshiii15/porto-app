@@ -49,6 +49,14 @@ NODE_ENV = production
 
 ✅ **Backend siap di Render!**
 
+**URL Backend Example**: https://portofolio-backend-gjl5.onrender.com
+
+### 6. Test Backend
+Test API endpoints:
+- Profile: https://portofolio-backend-gjl5.onrender.com/api/profile
+- Projects: https://portofolio-backend-gjl5.onrender.com/api/projects
+- Social Links: https://portofolio-backend-gjl5.onrender.com/api/social-links
+
 ---
 
 ## 📋 Deploy Frontend ke Vercel (tetap sama)
@@ -59,7 +67,7 @@ NODE_ENV = production
 3. Root Directory: `frontend`
 4. Environment Variables:
 ```
-NEXT_PUBLIC_API_URL = https://your-render-backend-url
+NEXT_PUBLIC_API_URL = https://portofolio-backend-gjl5.onrender.com
 ```
 
 ### 2. Deploy

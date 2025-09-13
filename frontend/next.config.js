@@ -1,9 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: 'export',
-    trailingSlash: true,
-    skipTrailingSlashRedirect: true,
-    distDir: 'out',
     images: {
         unoptimized: true,
         remotePatterns: [
@@ -13,7 +9,15 @@ const nextConfig = {
                 port: '5000',
                 pathname: '/uploads/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'portofolio-backend-gjl5.onrender.com',
+                pathname: '/uploads/**',
+            },
         ],
+    },
+    eslint: {
+        ignoreDuringBuilds: true,
     },
 }
 

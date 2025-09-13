@@ -10,9 +10,11 @@
 
 ## 🎯 Yang Akan Kita Lakukan:
 
-1. Deploy Backend ke **Railway** (gratis)
-2. Deploy Frontend ke **Vercel** (gratis)
-3. Database tetap pakai **MongoDB Atlas** (gratis)
+1. Deploy Backend ke **Render.com** (gratis) ✅ SELESAI
+2. Deploy Frontend ke **Vercel** (gratis) ← SEKARANG
+3. Database pakai **MongoDB Atlas** (gratis) ✅ SELESAI
+
+**Backend URL Anda**: https://portofolio-backend-gjl5.onrender.com ✅
 
 ---
 
@@ -151,11 +153,13 @@ Value: production
 1. Klik "Import Project"
 2. Pilih repository: `porto-app`
 3. **PENTING**: Ubah "Root Directory" ke `frontend`
-4. Di "Environment Variables" tambahkan:
+4. **Build Command**: `npm run build`
+5. **Output Directory**: `.next` (biarkan default)
+6. Di "Environment Variables" tambahkan:
    ```
-   NEXT_PUBLIC_API_URL = https://your-railway-backend-url
+   NEXT_PUBLIC_API_URL = https://portofolio-backend-gjl5.onrender.com
    ```
-5. Klik "Deploy"
+7. Klik "Deploy"
 
 ### Test Frontend
 
