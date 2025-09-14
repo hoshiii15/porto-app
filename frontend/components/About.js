@@ -7,18 +7,26 @@ const About = ({ profile }) => {
     const [projectCount, setProjectCount] = useState(0);
     const [hasAnimated, setHasAnimated] = useState(false);
     const [skills, setSkills] = useState([]);
+    const [statistics, setStatistics] = useState({
+        yearsExperience: 3,
+        successRate: 100,
+        totalProjects: 0,
+        totalCategories: 4,
+        supportAvailability: '24/7'
+    });
     const sectionRef = useRef(null);
     const timerRef = useRef(null);
 
     const bio = profile?.description || profile?.bio || 'Detailed information about your skills, experience, and passion for development.';
 
     useEffect(() => {
-        // Fetch project count and skills
+        // Fetch project count, skills, and statistics
         const fetchData = async () => {
             try {
-                const [projectsResponse, skillsResponse] = await Promise.all([
+                const [projectsResponse, skillsResponse, statisticsResponse] = await Promise.all([
                     getProjects(),
-                    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/skills`)
+                    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/skills`),
+                    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/statistics`)
                 ]);
                 
                 setProjectCount(projectsResponse.data.length);
@@ -34,6 +42,11 @@ const About = ({ profile }) => {
                         { name: 'Database Design', level: 80, color: 'from-purple-500 to-purple-600' },
                         { name: 'UI/UX Design', level: 75, color: 'from-pink-500 to-pink-600' },
                     ]);
+                }
+
+                if (statisticsResponse.ok) {
+                    const statisticsData = await statisticsResponse.json();
+                    setStatistics(statisticsData);
                 }
             } catch (error) {
                 console.error('Failed to fetch data:', error);
@@ -54,30 +67,34 @@ const About = ({ profile }) => {
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting && !hasAnimated) {
+                if (entry.isIntersecting) {
                     setIsVisible(true);
-                    setHasAnimated(true);
-                    // Animate text typing effect
-                    const text = bio;
-                    let index = 0;
                     
-                    // Clear any existing timer
-                    if (timerRef.current) {
-                        clearInterval(timerRef.current);
-                    }
-                    
-                    timerRef.current = setInterval(() => {
-                        setAnimatedText(text.slice(0, index));
-                        index++;
-                        if (index > text.length) {
+                    if (!hasAnimated) {
+                        setHasAnimated(true);
+                        // Animate text typing effect
+                        const text = bio;
+                        let index = 0;
+                        
+                        // Clear any existing timer
+                        if (timerRef.current) {
                             clearInterval(timerRef.current);
-                            timerRef.current = null;
                         }
-                    }, 30);
-                } else if (entry.isIntersecting && hasAnimated) {
-                    // If already animated, just show the full text
-                    setIsVisible(true);
-                    setAnimatedText(bio);
+                        
+                        timerRef.current = setInterval(() => {
+                            setAnimatedText(text.slice(0, index));
+                            index++;
+                            if (index > text.length) {
+                                clearInterval(timerRef.current);
+                                timerRef.current = null;
+                            }
+                        }, 30);
+                    } else {
+                        // If already animated, just show the full text
+                        setAnimatedText(bio);
+                    }
+                } else {
+                    setIsVisible(false);
                 }
             },
             { threshold: 0.3 }
@@ -190,9 +207,9 @@ const About = ({ profile }) => {
                                 {/* Achievement Stats */}
                                 <div className="grid grid-cols-3 gap-4 mt-8 pt-6 border-t border-gray-700">
                                     {[
-                                        { number: `${projectCount}+`, label: 'Projects' },
-                                        { number: `${profile?.yearsExperience || 3}+`, label: 'Years Exp' },
-                                        { number: '100%', label: 'Success Rate' }
+                                        { number: `${statistics.totalProjects || projectCount}+`, label: 'Projects' },
+                                        { number: `${statistics.yearsExperience}+`, label: 'Years Exp' },
+                                        { number: `${statistics.successRate}%`, label: 'Success Rate' }
                                     ].map((stat, index) => (
                                         <div key={stat.label} className="text-center">
                                             <div className="text-2xl font-bold text-blue-400">{stat.number}</div>

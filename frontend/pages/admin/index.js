@@ -30,6 +30,14 @@ function AdminDashboard() {
         level: 50,
         color: 'from-blue-500 to-blue-600'
     });
+    const [statistics, setStatistics] = useState({
+        yearsExperience: 3,
+        successRate: 100,
+        totalProjects: 0,
+        totalCategories: 4,
+        supportAvailability: '24/7'
+    });
+    const [isStatisticsFormOpen, setIsStatisticsFormOpen] = useState(false);
     const router = useRouter();
     const api = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
@@ -100,11 +108,12 @@ function AdminDashboard() {
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const [projectsRes, socialRes, profileRes, skillsRes] = await Promise.all([
+            const [projectsRes, socialRes, profileRes, skillsRes, statisticsRes] = await Promise.all([
                 getProjects(),
                 getSocialLinks(),
                 getProfile(),
-                fetch(`${api}/api/skills`)
+                fetch(`${api}/api/skills`),
+                fetch(`${api}/api/statistics`)
             ]);
 
             setProjects(projectsRes.data);
@@ -116,6 +125,11 @@ function AdminDashboard() {
             if (skillsRes.ok) {
                 const skillsData = await skillsRes.json();
                 setSkills(skillsData);
+            }
+
+            if (statisticsRes.ok) {
+                const statisticsData = await statisticsRes.json();
+                setStatistics(statisticsData);
             }
         } catch (error) {
             console.error('Failed to fetch data:', error);
@@ -251,6 +265,32 @@ function AdminDashboard() {
         setIsSkillFormOpen(false);
         setEditingSkill(null);
         setNewSkill({ name: '', level: 50, color: 'from-blue-500 to-blue-600' });
+    };
+
+    // Statistics functions
+    const handleUpdateStatistics = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(`${api}/api/statistics`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(statistics),
+            });
+
+            if (response.ok) {
+                const updatedStatistics = await response.json();
+                setStatistics(updatedStatistics);
+                setIsStatisticsFormOpen(false);
+                alert('Statistics updated successfully!');
+            } else {
+                alert('Failed to update statistics');
+            }
+        } catch (error) {
+            console.error('Error updating statistics:', error);
+            alert('Error updating statistics');
+        }
     };
 
     const handleCreateProject = async (formData) => {
@@ -619,6 +659,52 @@ function AdminDashboard() {
                     </div>
                 </div>
 
+                {/* Statistics Management */}
+                <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300">
+                    <div className="flex justify-between items-center mb-6">
+                        <div className="flex items-center space-x-3">
+                            <div className="w-10 h-10 bg-gradient-to-br from-yellow-600 to-orange-600 rounded-xl flex items-center justify-center">
+                                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                            </div>
+                            <h2 className="text-xl font-bold text-white">Portfolio Statistics</h2>
+                        </div>
+                        <button
+                            onClick={() => setIsStatisticsFormOpen(true)}
+                            className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 text-white px-4 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-yellow-500/25"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            <span>Edit Statistics</span>
+                        </button>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <div className="bg-gray-700/50 rounded-xl p-4">
+                            <div className="text-2xl font-bold text-yellow-400">{statistics.yearsExperience}+</div>
+                            <div className="text-gray-400 text-sm">Years Experience</div>
+                        </div>
+                        <div className="bg-gray-700/50 rounded-xl p-4">
+                            <div className="text-2xl font-bold text-green-400">{statistics.successRate}%</div>
+                            <div className="text-gray-400 text-sm">Success Rate</div>
+                        </div>
+                        <div className="bg-gray-700/50 rounded-xl p-4">
+                            <div className="text-2xl font-bold text-blue-400">{statistics.totalProjects}+</div>
+                            <div className="text-gray-400 text-sm">Total Projects</div>
+                        </div>
+                        <div className="bg-gray-700/50 rounded-xl p-4">
+                            <div className="text-2xl font-bold text-purple-400">{statistics.totalCategories}</div>
+                            <div className="text-gray-400 text-sm">Categories</div>
+                        </div>
+                        <div className="bg-gray-700/50 rounded-xl p-4">
+                            <div className="text-2xl font-bold text-indigo-400">{statistics.supportAvailability}</div>
+                            <div className="text-gray-400 text-sm">Support</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
                     {/* Projects Section */}
                     <div className="lg:col-span-1">
@@ -833,6 +919,98 @@ function AdminDashboard() {
                                 <button
                                     type="button"
                                     onClick={closeSkillForm}
+                                    className="flex-1 bg-gray-600 hover:bg-gray-500 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Statistics Form Modal */}
+            {isStatisticsFormOpen && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <div className="bg-gray-800 rounded-2xl p-6 w-full max-w-md border border-gray-700">
+                        <h3 className="text-xl font-bold text-white mb-6">Edit Portfolio Statistics</h3>
+                        <form onSubmit={handleUpdateStatistics} className="space-y-4">
+                            <div>
+                                <label className="block text-gray-300 text-sm font-medium mb-2">
+                                    Years Experience
+                                </label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    value={statistics.yearsExperience}
+                                    onChange={(e) => setStatistics({ ...statistics, yearsExperience: Number(e.target.value) })}
+                                    className="w-full p-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 outline-none transition-all duration-300"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-300 text-sm font-medium mb-2">
+                                    Success Rate (%)
+                                </label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    value={statistics.successRate}
+                                    onChange={(e) => setStatistics({ ...statistics, successRate: Number(e.target.value) })}
+                                    className="w-full p-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 outline-none transition-all duration-300"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-300 text-sm font-medium mb-2">
+                                    Total Projects
+                                </label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    value={statistics.totalProjects}
+                                    onChange={(e) => setStatistics({ ...statistics, totalProjects: Number(e.target.value) })}
+                                    className="w-full p-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 outline-none transition-all duration-300"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-300 text-sm font-medium mb-2">
+                                    Total Categories
+                                </label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    value={statistics.totalCategories}
+                                    onChange={(e) => setStatistics({ ...statistics, totalCategories: Number(e.target.value) })}
+                                    className="w-full p-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 outline-none transition-all duration-300"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-300 text-sm font-medium mb-2">
+                                    Support Availability
+                                </label>
+                                <input
+                                    type="text"
+                                    value={statistics.supportAvailability}
+                                    onChange={(e) => setStatistics({ ...statistics, supportAvailability: e.target.value })}
+                                    className="w-full p-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 outline-none transition-all duration-300"
+                                    placeholder="e.g., 24/7, Business Hours"
+                                    required
+                                />
+                            </div>
+                            <div className="flex space-x-3 pt-4">
+                                <button
+                                    type="submit"
+                                    className="flex-1 bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300"
+                                >
+                                    Update Statistics
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsStatisticsFormOpen(false)}
                                     className="flex-1 bg-gray-600 hover:bg-gray-500 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300"
                                 >
                                     Cancel
