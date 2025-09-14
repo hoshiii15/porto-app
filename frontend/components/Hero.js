@@ -175,8 +175,7 @@ const Hero = ({ name, bio }) => {
 
                 <div className="absolute bottom-24 left-1/3 text-xs text-purple-400/30 font-mono animate-float" style={{ animationDelay: '4s' }}>
                     <div className="bg-gray-900/20 p-2 rounded border border-purple-400/20">
-                        const magic = () =&gt; {'{...}'
-                        
+                        const magic = () =&gt; {'{ ... }'}
                     </div>
                 </div>
             </div>
