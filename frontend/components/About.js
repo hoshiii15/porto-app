@@ -65,47 +65,34 @@ const About = ({ profile }) => {
     }, []);
 
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                    
-                    if (!hasAnimated) {
-                        setHasAnimated(true);
-                        // Animate text typing effect
-                        const text = bio;
-                        let index = 0;
-                        
-                        // Clear any existing timer
-                        if (timerRef.current) {
-                            clearInterval(timerRef.current);
-                        }
-                        
-                        timerRef.current = setInterval(() => {
-                            setAnimatedText(text.slice(0, index));
-                            index++;
-                            if (index > text.length) {
-                                clearInterval(timerRef.current);
-                                timerRef.current = null;
-                            }
-                        }, 30);
-                    } else {
-                        // If already animated, just show the full text
-                        setAnimatedText(bio);
-                    }
-                } else {
-                    setIsVisible(false);
+        // Set visible immediately and start typing animation
+        setIsVisible(true);
+        
+        if (!hasAnimated) {
+            setHasAnimated(true);
+            // Animate text typing effect
+            const text = bio;
+            let index = 0;
+            
+            // Clear any existing timer
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+            }
+            
+            timerRef.current = setInterval(() => {
+                setAnimatedText(text.slice(0, index));
+                index++;
+                if (index > text.length) {
+                    clearInterval(timerRef.current);
+                    timerRef.current = null;
                 }
-            },
-            { threshold: 0.3 }
-        );
-
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
+            }, 30);
+        } else {
+            // If already animated, just show the full text
+            setAnimatedText(bio);
         }
 
         return () => {
-            observer.disconnect();
             if (timerRef.current) {
                 clearInterval(timerRef.current);
             }
@@ -121,7 +108,7 @@ const About = ({ profile }) => {
             </div>
 
             <div className="container mx-auto px-6 relative z-10">
-                <div className={`transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}>
+                <div className="opacity-100">
                     {/* Section Header */}
                     <div className="text-center mb-16">
                         <span className="inline-block text-blue-400 text-sm font-semibold tracking-wider uppercase mb-2">
@@ -137,7 +124,7 @@ const About = ({ profile }) => {
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         {/* Bio Section */}
-                        <div className={`transition-all duration-1000 delay-300 ease-out ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
+                        <div className="opacity-100">
                             <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300">
                                 <h3 className="text-2xl font-bold mb-6 text-white">My Story</h3>
                                 <div className="text-gray-300 leading-relaxed text-lg min-h-[120px]">
@@ -181,7 +168,7 @@ const About = ({ profile }) => {
                         </div>
 
                         {/* Skills Section */}
-                        <div className={`transition-all duration-1000 delay-500 ease-out ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
+                        <div className="opacity-100">
                             <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300">
                                 <h3 className="text-2xl font-bold mb-8 text-white">Skills & Expertise</h3>
                                 <div className="space-y-6">
@@ -193,11 +180,8 @@ const About = ({ profile }) => {
                                             </div>
                                             <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                                                 <div
-                                                    className={`h-full bg-gradient-to-r ${skill.color} rounded-full transition-all duration-1000 ease-out`}
-                                                    style={{
-                                                        width: isVisible ? `${skill.level}%` : '0%',
-                                                        transitionDelay: `${600 + index * 150}ms`
-                                                    }}
+                                                    className={`h-full bg-gradient-to-r ${skill.color} rounded-full`}
+                                                    style={{ width: `${skill.level}%` }}
                                                 ></div>
                                             </div>
                                         </div>

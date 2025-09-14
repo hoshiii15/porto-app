@@ -74,7 +74,7 @@ export default function ProjectDetail({ project, profile }) {
 
                     <div className="container mx-auto px-6 max-w-6xl relative z-10">
                         {/* Back Button */}
-                        <div className={`transition-all duration-700 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                        <div className="opacity-100">
                             <button
                                 onClick={() => router.push('/')}
                                 className="group inline-flex items-center space-x-2 text-blue-400 hover:text-blue-300 mb-8 transition-all duration-300 hover:translate-x-2"
@@ -87,7 +87,7 @@ export default function ProjectDetail({ project, profile }) {
                         </div>
 
                         {/* Project Header */}
-                        <div className={`text-center mb-12 transition-all duration-1000 delay-200 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                        <div className="text-center mb-12">
                             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
                                 <span className="bg-gradient-to-r from-white via-blue-100 to-blue-300 bg-clip-text text-transparent">
                                     {project.title}
@@ -100,7 +100,7 @@ export default function ProjectDetail({ project, profile }) {
 
                         {/* Project Image */}
                         {project.imageUrl && (
-                            <div className={`relative w-full h-96 md:h-[500px] mb-12 rounded-2xl overflow-hidden transition-all duration-1000 delay-400 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                            <div className="relative w-full h-96 md:h-[500px] mb-12 rounded-2xl overflow-hidden">
                                 <Image
                                     src={imageUrl}
                                     alt={project.title}
@@ -149,7 +149,7 @@ export default function ProjectDetail({ project, profile }) {
                 {/* Content Section */}
                 <div className="container mx-auto px-6 max-w-6xl pb-20">
                     {/* Tab Navigation */}
-                    <div className={`flex justify-center mb-12 transition-all duration-1000 delay-600 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                    <div className="flex justify-center mb-12">
                         <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-2 border border-gray-700/50">
                             <div className="flex space-x-2">
                                 {tabs.map((tab) => (
@@ -170,7 +170,7 @@ export default function ProjectDetail({ project, profile }) {
                     </div>
 
                     {/* Tab Content */}
-                    <div className={`transition-all duration-1000 delay-800 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                    <div className="opacity-100">
                         {activeTab === 'overview' && (
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                                 {/* Technologies */}

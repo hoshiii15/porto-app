@@ -2,26 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import ProjectCard from './ProjectCard';
 
 const Projects = ({ projects }) => {
-    const [isVisible, setIsVisible] = useState(false);
+    const [isVisible, setIsVisible] = useState(true); // Always visible now
     const [filter, setFilter] = useState('all');
     const [filteredProjects, setFilteredProjects] = useState([]);
     const sectionRef = useRef(null);
 
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                }
-            },
-            { threshold: 0.2 }
-        );
-
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
-        }
-
-        return () => observer.disconnect();
+        // Remove IntersectionObserver - components are always visible
     }, []);
 
     useEffect(() => {
@@ -64,7 +51,7 @@ const Projects = ({ projects }) => {
 
             <div className="container mx-auto px-6 relative z-10">
                 {/* Section Header */}
-                <div className={`text-center mb-16 transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}>
+                <div className="text-center mb-16">
                     <span className="inline-block text-blue-400 text-sm font-semibold tracking-wider uppercase mb-2">
                         Portfolio
                     </span>
@@ -81,7 +68,7 @@ const Projects = ({ projects }) => {
 
                 {/* Filter Buttons */}
                 {categories.length > 1 && (
-                    <div className={`flex flex-wrap justify-center gap-4 mb-12 transition-all duration-1000 delay-300 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                    <div className="flex flex-wrap justify-center gap-4 mb-12">
                         {categories.map((category) => (
                             <button
                                 key={category}
@@ -98,44 +85,13 @@ const Projects = ({ projects }) => {
                 )}
 
                 {/* Projects Grid */}
-                <div className={`transition-all duration-1000 delay-500 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}>
+                <div className="opacity-100">
                     {(filteredProjects && filteredProjects.length > 0) ? (
                         <>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                                 {filteredProjects.map((project, index) => (
-                                    <div
-                                        key={project._id}
-                                        className={`transition-all duration-700 ease-out ${isVisible
-                                                ? 'opacity-100 translate-y-0'
-                                                : 'opacity-0 translate-y-10'
-                                            }`}
-                                        style={{ transitionDelay: `${600 + index * 150}ms` }}
-                                    >
+                                    <div key={project._id}>
                                         <ProjectCard project={project} />
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* Project Stats */}
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
-                                {[
-                                    { number: filteredProjects.length, label: 'Projects' },
-                                    { number: categories.length - 1, label: 'Categories' },
-                                    { number: '100%', label: 'Success Rate' },
-                                    { number: '24/7', label: 'Support' }
-                                ].map((stat, index) => (
-                                    <div
-                                        key={stat.label}
-                                        className={`text-center bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 transition-all duration-700 ease-out ${isVisible
-                                                ? 'opacity-100 translate-y-0'
-                                                : 'opacity-0 translate-y-10'
-                                            }`}
-                                        style={{ transitionDelay: `${800 + index * 100}ms` }}
-                                    >
-                                        <div className="text-2xl md:text-3xl font-bold text-blue-400 mb-2">
-                                            {typeof stat.number === 'number' ? stat.number : stat.number}
-                                        </div>
-                                        <div className="text-gray-400 text-sm font-medium">{stat.label}</div>
                                     </div>
                                 ))}
                             </div>

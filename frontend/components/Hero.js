@@ -74,18 +74,18 @@ const Hero = ({ name, bio }) => {
                     {/* Enhanced CTA Buttons */}
                     <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-1000 delay-500 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                         <a
-                            href="#projects"
+                            href="#about"
                             className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full hover:from-blue-500 hover:to-purple-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25"
                         >
-                            <span className="relative z-10">View My Work</span>
+                            <span className="relative z-10">About Me</span>
                             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                         </a>
 
                         <a
-                            href="#about"
+                            href="#projects"
                             className="group inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-300 border-2 border-white/20 rounded-full hover:border-white/40 hover:bg-white/5 transform hover:scale-105"
                         >
-                            <span>About Me</span>
+                            <span>View My Work</span>
                             <svg className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                             </svg>
