@@ -83,7 +83,7 @@ const Navbar = ({ profile }) => {
 
                         {/* Enhanced CTA Button */}
                         <a
-                            href="#contact"
+                            href="mailto:hosearakan1226@gmail.com?subject=Hello, I wanted to get in touch&body=Insert your message here!"
                             className="group relative inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-full overflow-hidden transition-all duration-300 hover:from-blue-500 hover:to-purple-500 hover:shadow-lg hover:shadow-blue-500/25 transform hover:scale-105"
                         >
                             <span className="relative z-10 flex items-center gap-2">
