@@ -2,16 +2,10 @@ import { useState, useEffect } from 'react';
 
 const Hero = ({ name, bio }) => {
     const [isVisible, setIsVisible] = useState(false);
-    const [showScrollIndicator, setShowScrollIndicator] = useState(true);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
         setIsVisible(true);
-
-        // Hide scroll indicator after 3 seconds
-        const scrollTimer = setTimeout(() => {
-            setShowScrollIndicator(false);
-        }, 3000);
 
         const handleMouseMove = (e) => {
             setMousePosition({
@@ -24,7 +18,6 @@ const Hero = ({ name, bio }) => {
 
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
-            clearTimeout(scrollTimer);
         };
     }, []);
 
@@ -92,18 +85,6 @@ const Hero = ({ name, bio }) => {
                         </a>
                     </div>
                 </div>
-
-                {/* Scroll Indicator - Only show for first 3 seconds */}
-                {showScrollIndicator && (
-                    <div className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 transition-all duration-1000 delay-700 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                        <div className="flex flex-col items-center space-y-2 text-gray-400">
-                            <span className="text-sm font-medium">Scroll Down</span>
-                            <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
-                                <div className="w-1 h-3 bg-gray-400 rounded-full animate-bounce mt-2"></div>
-                            </div>
-                        </div>
-                    </div>
-                )}
             </div>
         </section>
     );

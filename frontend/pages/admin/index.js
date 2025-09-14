@@ -121,7 +121,7 @@ function AdminDashboard() {
             if (profileRes.data) {
                 setProfile(profileRes.data);
             }
-            
+
             if (skillsRes.ok) {
                 const skillsData = await skillsRes.json();
                 setSkills(skillsData);
@@ -623,7 +623,7 @@ function AdminDashboard() {
                                             <h3 className="font-medium text-white">{skill.name}</h3>
                                             <div className="flex items-center space-x-2 mt-2">
                                                 <div className="flex-1 bg-gray-700 rounded-full h-2">
-                                                    <div 
+                                                    <div
                                                         className={`h-2 bg-gradient-to-r ${skill.color} rounded-full transition-all duration-300`}
                                                         style={{ width: `${skill.level}%` }}
                                                     ></div>
@@ -680,7 +680,7 @@ function AdminDashboard() {
                             <span>Edit Statistics</span>
                         </button>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                         <div className="bg-gray-700/50 rounded-xl p-4">
                             <div className="text-2xl font-bold text-yellow-400">{statistics.yearsExperience}+</div>

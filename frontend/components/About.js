@@ -28,9 +28,9 @@ const About = ({ profile }) => {
                     fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/skills`),
                     fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/statistics`)
                 ]);
-                
+
                 setProjectCount(projectsResponse.data.length);
-                
+
                 if (skillsResponse.ok) {
                     const skillsData = await skillsResponse.json();
                     setSkills(skillsData);
@@ -67,32 +67,36 @@ const About = ({ profile }) => {
     useEffect(() => {
         // Set visible immediately and start typing animation
         setIsVisible(true);
-        
-        if (!hasAnimated) {
-            setHasAnimated(true);
-            // Animate text typing effect
-            const text = bio;
-            let index = 0;
-            
-            // Clear any existing timer
-            if (timerRef.current) {
-                clearInterval(timerRef.current);
-            }
-            
-            timerRef.current = setInterval(() => {
-                setAnimatedText(text.slice(0, index));
-                index++;
-                if (index > text.length) {
+
+        // Start typing animation after a short delay to ensure component is ready
+        const startDelay = setTimeout(() => {
+            if (!hasAnimated && bio && bio.length > 0) {
+                setHasAnimated(true);
+                // Animate text typing effect
+                const text = bio;
+                let index = 0;
+
+                // Clear any existing timer
+                if (timerRef.current) {
                     clearInterval(timerRef.current);
-                    timerRef.current = null;
                 }
-            }, 30);
-        } else {
-            // If already animated, just show the full text
-            setAnimatedText(bio);
-        }
+
+                timerRef.current = setInterval(() => {
+                    setAnimatedText(text.slice(0, index));
+                    index++;
+                    if (index > text.length) {
+                        clearInterval(timerRef.current);
+                        timerRef.current = null;
+                    }
+                }, 50); // Slightly slower typing speed for better readability
+            } else if (bio) {
+                // If already animated or no animation needed, just show the full text
+                setAnimatedText(bio);
+            }
+        }, 100);
 
         return () => {
+            clearTimeout(startDelay);
             if (timerRef.current) {
                 clearInterval(timerRef.current);
             }
@@ -130,7 +134,7 @@ const About = ({ profile }) => {
                                 <div className="text-gray-300 leading-relaxed text-lg min-h-[120px]">
                                     <p className="relative">
                                         {animatedText}
-                                        {animatedText.length < bio.length && (
+                                        {(animatedText.length < bio.length || !hasAnimated) && (
                                             <span className="inline-block w-0.5 h-6 bg-blue-400 ml-1 animate-pulse"></span>
                                         )}
                                     </p>
