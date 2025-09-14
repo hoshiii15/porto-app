@@ -9,24 +9,37 @@ const ProjectCard = ({ project }) => {
 
     return (
         <div
-            className="group relative bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/50 hover:border-gray-600/50 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10"
+            className="group relative bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/50 hover:border-gray-600/50 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10 card-hover"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
             {/* Animated Background Gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-transparent to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
+            {/* Floating decorative elements */}
+            <div className="absolute top-2 right-2 w-3 h-3 bg-blue-400/30 rounded-full animate-pulse"></div>
+            <div className="absolute top-4 right-8 w-2 h-2 bg-purple-400/40 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+
             {/* Image Section */}
             <div className="relative h-56 w-full overflow-hidden">
+                {/* Tech badge overlay */}
+                <div className="absolute top-3 left-3 z-10 bg-gray-900/80 backdrop-blur-sm px-2 py-1 rounded-full">
+                    <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" style={{ animationDelay: '0.3s' }}></div>
+                        <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: '0.6s' }}></div>
+                    </div>
+                </div>
+
                 <Image
                     src={imageUrl}
                     alt={project.title}
                     fill
                     style={{ objectFit: 'cover' }}
-                    className="transition-all duration-700 group-hover:scale-110"
+                    className="transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
                 />
 
-                {/* Overlay on Hover */}
+                {/* Enhanced Overlay on Hover */}
                 <div className={`absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
                     <div className="absolute bottom-4 left-4 right-4">
                         <div className="flex space-x-3">
@@ -35,7 +48,7 @@ const ProjectCard = ({ project }) => {
                                     href={project.codeUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center space-x-2 bg-gray-900/80 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-800/80 transition-all duration-300 transform hover:scale-105"
+                                    className="flex items-center space-x-2 bg-gray-900/80 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-800/80 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
                                 >
                                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                         <path fillRule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -63,27 +76,29 @@ const ProjectCard = ({ project }) => {
 
             {/* Content Section */}
             <div className="relative p-6 z-10">
-                <div className="mb-4">
-                    <h3 className="text-xl font-bold mb-2 text-white group-hover:text-blue-300 transition-colors duration-300">
+                {/* Project title with subtle hover effect */}
+                <div className="mb-4 relative">
+                    <h3 className="text-xl font-bold mb-2 text-white group-hover:text-blue-300 transition-all duration-300 relative group-hover:scale-105 transform-gpu">
                         {project.title}
                     </h3>
-                    <p className="text-gray-400 text-sm leading-relaxed line-clamp-3">
+                    <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 group-hover:text-gray-300 transition-colors">
                         {project.description}
                     </p>
                 </div>
 
-                {/* Tags */}
+                {/* Enhanced Tags */}
                 <div className="flex flex-wrap gap-2 mb-6">
-                    {project.tags?.slice(0, 3).map((tag) => (
+                    {project.tags?.slice(0, 3).map((tag, index) => (
                         <span
                             key={tag}
-                            className="bg-gray-700/50 border border-gray-600/50 text-gray-300 text-xs font-medium px-3 py-1 rounded-full hover:bg-blue-600/20 hover:border-blue-500/50 hover:text-blue-300 transition-all duration-300"
+                            className="bg-gray-700/50 border border-gray-600/50 text-gray-300 text-xs font-medium px-3 py-1 rounded-full hover:bg-blue-600/20 hover:border-blue-500/50 hover:text-blue-300 transition-all duration-300 hover:scale-105 cursor-pointer"
+                            style={{ animationDelay: `${index * 0.1}s` }}
                         >
                             {tag}
                         </span>
                     ))}
                     {project.tags?.length > 3 && (
-                        <span className="text-gray-500 text-xs font-medium px-3 py-1">
+                        <span className="text-gray-500 text-xs font-medium px-3 py-1 hover:text-gray-400 transition-colors">
                             +{project.tags.length - 3} more
                         </span>
                     )}

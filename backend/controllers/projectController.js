@@ -55,16 +55,24 @@ exports.createProject = async (req, res) => {
             }
         }
 
-        if (req.file) {
-            // Check if file exists before setting imageUrl
-            const fs = require('fs')
-            if (fs.existsSync(req.file.path)) {
-                data.imageUrl = `/uploads/${req.file.filename}`
-            } else {
-                console.warn('Uploaded file not found:', req.file.path)
-            }
+        // Set default description ONLY if no description is provided at all (null, undefined, or empty string)
+        console.log('Create project - description received:', data.description);
+        if (!data.description || data.description.trim() === '') {
+            console.log('Setting default description');
+            data.description = "This project demonstrates my expertise in modern web development technologies and showcases my ability to create responsive, user-friendly applications with clean, maintainable code."
+        } else {
+            console.log('Using provided description');
         }
-        
+
+        // Ensure URLs are properly handled (allow empty strings)
+        data.liveUrl = data.liveUrl || '';
+        data.codeUrl = data.codeUrl || '';
+
+        if (req.file) {
+            // Set imageUrl to use the GridFS image route
+            data.imageUrl = `/api/projects/image/${req.file.filename}`
+        }
+
         const project = new Project(data)
         await project.save()
         res.json(project)
@@ -121,15 +129,28 @@ exports.updateProject = async (req, res) => {
             }
         }
 
+        // Set default description ONLY if explicitly updating to empty (but preserve existing if not updating description)
+        console.log('Update project - description received:', data.description);
+        console.log('Update project - hasOwnProperty description:', data.hasOwnProperty('description'));
+        if (data.hasOwnProperty('description') && (!data.description || data.description.trim() === '')) {
+            console.log('Setting default description for update');
+            data.description = "This project demonstrates my expertise in modern web development technologies and showcases my ability to create responsive, user-friendly applications with clean, maintainable code."
+        } else if (data.hasOwnProperty('description')) {
+            console.log('Using provided description for update');
+        }
+
+        // Ensure URLs are properly handled (allow empty strings) - only update if provided
+        if (data.hasOwnProperty('liveUrl')) {
+            data.liveUrl = data.liveUrl || '';
+        }
+        if (data.hasOwnProperty('codeUrl')) {
+            data.codeUrl = data.codeUrl || '';
+        }
+
         Object.assign(p, data)
         if (req.file) {
-            // Check if file exists before setting imageUrl
-            const fs = require('fs')
-            if (fs.existsSync(req.file.path)) {
-                p.imageUrl = `/uploads/${req.file.filename}`
-            } else {
-                console.warn('Uploaded file not found:', req.file.path)
-            }
+            // Set imageUrl to use the GridFS image route
+            p.imageUrl = `/api/projects/image/${req.file.filename}`
         }
         await p.save()
         res.json(p)

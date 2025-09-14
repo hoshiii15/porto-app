@@ -93,3 +93,197 @@ body {
 .animate-pulse-glow {
   animation: pulse-glow 3s ease-in-out infinite;
 }
+
+/* Advanced particle floating animation */
+@keyframes float-particle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.6;
+  }
+  33% {
+    transform: translateY(-30px) rotate(120deg);
+    opacity: 1;
+  }
+  66% {
+    transform: translateY(-10px) rotate(240deg);
+    opacity: 0.8;
+  }
+}
+
+.animate-float-particle {
+  animation: float-particle 20s ease-in-out infinite;
+}
+
+/* Morphing blob animation */
+@keyframes morphing-blob {
+  0%, 100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    transform: translate(10px, -10px) rotate(90deg);
+  }
+  50% {
+    border-radius: 50% 60% 30% 60% / 40% 70% 60% 40%;
+    transform: translate(-5px, 5px) rotate(180deg);
+  }
+  75% {
+    border-radius: 60% 40% 50% 30% / 30% 40% 70% 60%;
+    transform: translate(-10px, -5px) rotate(270deg);
+  }
+}
+
+.animate-morphing-blob {
+  animation: morphing-blob 15s ease-in-out infinite;
+}
+
+/* Orbital motion animations */
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateX(150px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(150px) rotate(-360deg);
+  }
+}
+
+@keyframes orbit-reverse {
+  0% {
+    transform: rotate(360deg) translateX(120px) rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg) translateX(120px) rotate(0deg);
+  }
+}
+
+.animate-orbit {
+  animation: orbit 30s linear infinite;
+}
+
+.animate-orbit-reverse {
+  animation: orbit-reverse 25s linear infinite;
+}
+
+/* Text glitch effect */
+@keyframes text-glitch {
+  0%, 100% {
+    text-shadow: 
+      0.025em 0 0 #00fffc,
+      -0.025em -0.025em 0 #fc00ff,
+      0.025em 0.025em 0 #fffc00;
+  }
+  15% {
+    text-shadow: 
+      0.025em 0 0 #00fffc,
+      -0.025em -0.025em 0 #fc00ff,
+      0.025em 0.025em 0 #fffc00;
+  }
+  16% {
+    text-shadow: 
+      -0.025em -0.025em 0 #00fffc,
+      0.025em 0.025em 0 #fc00ff,
+      -0.025em 0 0 #fffc00;
+  }
+  49% {
+    text-shadow: 
+      -0.025em -0.025em 0 #00fffc,
+      0.025em 0.025em 0 #fc00ff,
+      -0.025em 0 0 #fffc00;
+  }
+  50% {
+    text-shadow: 
+      0.025em 0.025em 0 #00fffc,
+      0.025em 0 0 #fc00ff,
+      0 -0.025em 0 #fffc00;
+  }
+  99% {
+    text-shadow: 
+      0.025em 0.025em 0 #00fffc,
+      0.025em 0 0 #fc00ff,
+      0 -0.025em 0 #fffc00;
+  }
+}
+
+.animate-text-glitch {
+  animation: text-glitch 0.3s ease-in-out infinite alternate;
+}
+
+/* Card hover effects */
+@keyframes card-hover {
+  0% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  100% {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  animation: card-hover 0.3s ease forwards;
+}
+
+/* Skill progress animation */
+@keyframes skill-progress {
+  0% {
+    width: 0%;
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-skill-progress {
+  animation: skill-progress 2s ease-out forwards;
+}
+
+/* Typewriter cursor */
+@keyframes cursor-blink {
+  0%, 50% { border-color: transparent; }
+  51%, 100% { border-color: #3b82f6; }
+}
+
+.animate-cursor {
+  animation: cursor-blink 1s infinite;
+}
+
+/* Dynamic line widening animation */
+@keyframes line-widen {
+  0% {
+    width: 0%;
+    box-shadow: 0 0 0px rgba(59, 130, 246, 0);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
+  }
+}
+
+.animate-line-widen {
+  animation: line-widen 0.7s ease-out forwards;
+}
+
+/* Shimmer effect for dynamic line */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}

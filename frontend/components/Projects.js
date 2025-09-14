@@ -42,11 +42,32 @@ const Projects = ({ projects }) => {
 
     return (
         <section id="projects" className="py-20 bg-gradient-to-br from-gray-900 via-gray-900 to-black relative overflow-hidden" ref={sectionRef}>
-            {/* Background Decorations */}
+            {/* Enhanced Background Decorations */}
             <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl"></div>
-                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl"></div>
-                <div className="absolute top-3/4 left-3/4 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl"></div>
+                <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl animate-morphing-blob"></div>
+                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl animate-morphing-blob" style={{ animationDelay: '2s' }}></div>
+                <div className="absolute top-3/4 left-3/4 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl animate-morphing-blob" style={{ animationDelay: '4s' }}></div>
+
+                {/* Floating Project Icons */}
+                <div className="absolute top-20 right-20 animate-float" style={{ animationDelay: '1s' }}>
+                    <div className="w-16 h-16 text-blue-400/20">
+                        <svg fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div className="absolute bottom-20 left-20 animate-orbit" style={{ animationDuration: '30s' }}>
+                    <div className="w-12 h-12 text-purple-400/20">
+                        <svg fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                        </svg>
+                    </div>
+                </div>
+
+                {/* Code decorations */}
+                <div className="absolute top-1/3 left-8 text-blue-400/10 font-mono text-4xl animate-pulse">{'</>'}</div>
+                <div className="absolute bottom-1/3 right-8 text-purple-400/10 font-mono text-3xl animate-pulse" style={{ animationDelay: '1s' }}>{'{ }'}</div>
             </div>
 
             <div className="container mx-auto px-6 relative z-10">
@@ -69,16 +90,23 @@ const Projects = ({ projects }) => {
                 {/* Filter Buttons */}
                 {categories.length > 1 && (
                     <div className="flex flex-wrap justify-center gap-4 mb-12">
-                        {categories.map((category) => (
+                        {categories.map((category, index) => (
                             <button
                                 key={category}
                                 onClick={() => setFilter(category)}
-                                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${filter === category
+                                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105 relative overflow-hidden ${filter === category
                                     ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25'
                                     : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 hover:text-white border border-gray-700/50 hover:border-gray-600/50'
                                     }`}
+                                style={{ animationDelay: `${index * 0.1}s` }}
                             >
-                                {category === 'all' ? 'All Projects' : category}
+                                {/* Button background animation */}
+                                <div className={`absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 transform scale-x-0 transition-transform duration-300 ${filter === category ? 'scale-x-100' : 'group-hover:scale-x-100'}`}></div>
+
+                                {/* Button content */}
+                                <span className="relative z-10 flex items-center gap-2">
+                                    {category === 'all' ? 'All Projects' : category.charAt(0).toUpperCase() + category.slice(1)}
+                                </span>
                             </button>
                         ))}
                     </div>

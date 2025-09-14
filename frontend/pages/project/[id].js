@@ -56,9 +56,9 @@ export default function ProjectDetail({ project, profile }) {
     const imageUrl = project.imageUrl ? `${apiUrl}${project.imageUrl}` : '/placeholder.jpg';
 
     const tabs = [
-        { id: 'overview', label: 'Overview', icon: '📋' },
-        { id: 'details', label: 'Details', icon: '🔍' },
-        { id: 'gallery', label: 'Gallery', icon: '🖼️' }
+        { id: 'overview', label: 'Overview' },
+        { id: 'details', label: 'Details' },
+        { id: 'gallery', label: 'Gallery' }
     ];
 
     return (
@@ -177,7 +177,6 @@ export default function ProjectDetail({ project, profile }) {
                                 <div className="lg:col-span-2">
                                     <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50">
                                         <h2 className="text-2xl font-bold text-white mb-6 flex items-center space-x-3">
-                                            <span>🛠️</span>
                                             <span>Technologies Used</span>
                                         </h2>
                                         <div className="flex flex-wrap gap-3">
@@ -225,13 +224,11 @@ export default function ProjectDetail({ project, profile }) {
                         {activeTab === 'details' && (
                             <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50">
                                 <h2 className="text-2xl font-bold text-white mb-6 flex items-center space-x-3">
-                                    <span>📖</span>
                                     <span>About This Project</span>
                                 </h2>
                                 <div className="prose prose-invert max-w-none">
                                     <div className="text-gray-300 leading-relaxed text-lg space-y-4">
                                         <p>{project.description}</p>
-                                        <p>This project demonstrates my expertise in modern web development technologies and showcases my ability to create responsive, user-friendly applications with clean, maintainable code.</p>
                                     </div>
                                 </div>
                             </div>
@@ -240,7 +237,6 @@ export default function ProjectDetail({ project, profile }) {
                         {activeTab === 'gallery' && (
                             <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50">
                                 <h2 className="text-2xl font-bold text-white mb-6 flex items-center space-x-3">
-                                    <span>🖼️</span>
                                     <span>Project Gallery</span>
                                 </h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

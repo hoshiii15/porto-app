@@ -107,15 +107,15 @@ const ProjectForm = ({ project, onSubmit, onCancel, isOpen }) => {
 
                         <div>
                             <label htmlFor="description" className="block text-sm font-medium text-gray-300 mb-1">
-                                Description *
+                                Description <span className="text-gray-500 text-xs">(Leave empty for auto-generated description)</span>
                             </label>
                             <textarea
                                 id="description"
                                 name="description"
-                                required
                                 rows={4}
                                 value={formData.description}
                                 onChange={handleInputChange}
+                                placeholder="Enter project description or leave empty for auto-generated description"
                                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
@@ -160,7 +160,7 @@ const ProjectForm = ({ project, onSubmit, onCancel, isOpen }) => {
 
                         <div>
                             <label htmlFor="liveUrl" className="block text-sm font-medium text-gray-300 mb-1">
-                                Live Demo URL
+                                Live Demo URL <span className="text-gray-500 text-xs">(Optional)</span>
                             </label>
                             <input
                                 type="url"
@@ -168,13 +168,14 @@ const ProjectForm = ({ project, onSubmit, onCancel, isOpen }) => {
                                 name="liveUrl"
                                 value={formData.liveUrl}
                                 onChange={handleInputChange}
+                                placeholder="https://your-live-demo.com"
                                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
 
                         <div>
                             <label htmlFor="codeUrl" className="block text-sm font-medium text-gray-300 mb-1">
-                                Source Code URL
+                                Source Code URL <span className="text-gray-500 text-xs">(Optional)</span>
                             </label>
                             <input
                                 type="url"
@@ -182,6 +183,7 @@ const ProjectForm = ({ project, onSubmit, onCancel, isOpen }) => {
                                 name="codeUrl"
                                 value={formData.codeUrl}
                                 onChange={handleInputChange}
+                                placeholder="https://github.com/username/repo"
                                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>

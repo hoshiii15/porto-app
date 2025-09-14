@@ -97,24 +97,28 @@
 2. Tambahkan environment variables satu per satu:
 
 **Variable 1:**
+
 ```
 Name: MONGO_URI
 Value: mongodb+srv://portofolio:1rwNr0ZRRIPPT29w@portofolio.wdg71al.mongodb.net/portfolio
 ```
 
 **Variable 2:**
+
 ```
 Name: JWT_SECRET
 Value: hosea-portfolio-secret-key-2025
 ```
 
 **Variable 3:**
+
 ```
 Name: PORT
 Value: 5000
 ```
 
 **Variable 4:**
+
 ```
 Name: NODE_ENV
 Value: production
@@ -178,12 +182,14 @@ Value: production
 **SOLUSI:**
 
 1. **Set Root Directory:**
+
    - Di Railway dashboard → Settings
    - Root Directory: `backend`
    - Build Command: `npm install`
    - Start Command: `npm start`
 
 2. **Redeploy:**
+
    - Klik tab "Deployments"
    - Klik "Deploy Latest Commit"
 
@@ -194,16 +200,19 @@ Value: production
 ### Error Umum Lainnya:
 
 **Backend tidak start:**
+
 - Check environment variables (MONGO_URI, JWT_SECRET, PORT)
 - Pastikan MongoDB Atlas network access allow dari anywhere
 - Check Railway service logs
 
 **Frontend tidak konek ke backend:**
+
 - Pastikan NEXT_PUBLIC_API_URL benar
 - Test backend URL manual: `{railway-url}/api/profile`
 - Check CORS settings di backend
 
 **Database connection failed:**
+
 - Verify MongoDB connection string
 - Check username/password
 - Ensure network access configured di MongoDB Atlas

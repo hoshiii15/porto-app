@@ -16,11 +16,13 @@ A modern, responsive portfolio website built with the MERN stack (MongoDB, Expre
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **Next.js 15.5.3** - React framework with SSR
 - **Tailwind CSS** - Utility-first CSS framework
 - **React Hooks** - Modern React development
 
 ### Backend
+
 - **Node.js** - JavaScript runtime
 - **Express.js** - Web application framework
 - **MongoDB** - NoSQL database
@@ -31,6 +33,7 @@ A modern, responsive portfolio website built with the MERN stack (MongoDB, Expre
 ## 📋 Prerequisites
 
 Before running this project, make sure you have the following installed:
+
 - Node.js (v14 or higher)
 - MongoDB (local or cloud instance)
 - Git
@@ -38,18 +41,21 @@ Before running this project, make sure you have the following installed:
 ## 🚀 Installation & Setup
 
 ### 1. Clone the repository
+
 ```bash
 git clone https://github.com/hoshiii15/porto-app.git
 cd porto-app
 ```
 
 ### 2. Backend Setup
+
 ```bash
 cd backend
 npm install
 ```
 
 Create a `.env` file in the backend directory:
+
 ```env
 MONGO_URI=mongodb://127.0.0.1:27017/portfolio
 JWT_SECRET=your_jwt_secret_here
@@ -58,11 +64,13 @@ PORT=5000
 
 Start the backend server:
 Create a `.env.local` file in the frontend directory:
+
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:5000
 ```
 
 Start the frontend development server:
+
 ```bash
 npm run dev
 ```
@@ -74,6 +82,7 @@ npm run dev
 3. **API**: Backend API runs on [http://localhost:5000](http://localhost:5000)
 
 ### Admin Features
+
 - **Profile Management**: Update personal information, bio, contact details
 - **Project Management**: Add, edit, delete portfolio projects
 - **Social Links**: Manage social media profiles with auto-detected icons
@@ -105,18 +114,21 @@ porto-app/
 ## 🎨 Features Showcase
 
 ### Dynamic Profile Management
+
 - Real-time profile updates
 - Location auto-detection
 - Professional contact information
 - Skills and bio management
 
 ### Project Portfolio
+
 - Image upload and management
 - Technology tag system
 - GitHub integration
 - Live demo links
 
 ### Admin Dashboard
+
 - Comprehensive content management
 - Real-time statistics
 - User-friendly interface
@@ -127,6 +139,7 @@ porto-app/
 ### Environment Variables
 
 **Backend (.env)**
+
 ```env
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_secret_key
@@ -134,6 +147,7 @@ PORT=5000
 ```
 
 **Frontend (.env.local)**
+
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:5000
 ```
@@ -141,11 +155,13 @@ NEXT_PUBLIC_API_URL=http://localhost:5000
 ## 🚀 Deployment
 
 ### Backend Deployment (Heroku/Railway/Vercel)
+
 1. Set environment variables in your hosting platform
 2. Ensure MongoDB connection is configured
 3. Deploy the backend folder
 
 ### Frontend Deployment (Vercel/Netlify)
+
 1. Set `NEXT_PUBLIC_API_URL` to your backend URL
 2. Deploy the frontend folder
 
@@ -164,6 +180,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👨‍💻 Author
 
 **Hosea Raka N**
+
 - GitHub: [@hoshiii15](https://github.com/hoshiii15)
 - Email: hosearakan1226@gmail.com
 

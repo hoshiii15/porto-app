@@ -11,6 +11,7 @@ Saya paham banget, deployment itu emang bisa bikin pusing di awal. Tapi tenang, 
 **Deployment** = Menaruh website Anda di internet supaya orang lain bisa akses
 
 Analogi sederhana:
+
 - Kode di komputer Anda = Rumah yang masih di dalam kepala
 - Deployment = Membangun rumah sungguhan yang bisa dilihat orang
 
@@ -19,8 +20,9 @@ Analogi sederhana:
 ## 🏗️ Apa yang Kita Butuhkan?
 
 Website kita punya 3 bagian:
+
 1. **Database** = Tempat menyimpan data (MongoDB Atlas)
-2. **Backend** = Otak website yang proses data (Railway)  
+2. **Backend** = Otak website yang proses data (Railway)
 3. **Frontend** = Tampilan yang dilihat user (Vercel)
 
 ---
@@ -28,6 +30,7 @@ Website kita punya 3 bagian:
 ## 🎯 MULAI SEKARANG - Yang Termudah Dulu!
 
 ### STEP 1: MongoDB Atlas (5 menit)
+
 **Ini untuk database - tempat nyimpen data portfolio Anda**
 
 1. **Buka browser, ketik**: `mongodb.com/cloud/atlas`
@@ -39,26 +42,18 @@ Website kita punya 3 bagian:
 7. **Nama cluster**: `portfolio`
 8. **Klik "Create"**
 
-**Bikin user database:**
-9. **Username**: `admin`
-10. **Password**: Klik "Autogenerate" (COPY hasilnya!)
-11. **Klik "Create User"**
+**Bikin user database:** 9. **Username**: `admin` 10. **Password**: Klik "Autogenerate" (COPY hasilnya!) 11. **Klik "Create User"**
 
-**Setup akses:**
-12. **Klik "Add My Current IP"**
-13. **Klik "Finish and Close"**
+**Setup akses:** 12. **Klik "Add My Current IP"** 13. **Klik "Finish and Close"**
 
-**Ambil connection string:**
-14. **Klik "Connect"** di cluster
-15. **Pilih "Connect your application"**
-16. **Copy string panjang** yang muncul
-17. **PASTE ke notepad** dan simpan!
+**Ambil connection string:** 14. **Klik "Connect"** di cluster 15. **Pilih "Connect your application"** 16. **Copy string panjang** yang muncul 17. **PASTE ke notepad** dan simpan!
 
 ✅ **SELESAI! Database sudah siap!**
 
 ---
 
-### STEP 2: Railway (10 menit) 
+### STEP 2: Railway (10 menit)
+
 **Ini untuk backend - otak website Anda**
 
 1. **Buka browser, ketik**: `railway.app`
@@ -70,10 +65,7 @@ Website kita punya 3 bagian:
 
 **Tunggu deploy selesai** (minum kopi dulu 5 menit ☕)
 
-**Setup environment:**
-7. **Klik project** yang baru dibuat
-8. **Klik tab "Variables"**
-9. **Tambah variable** satu-satu:
+**Setup environment:** 7. **Klik project** yang baru dibuat 8. **Klik tab "Variables"** 9. **Tambah variable** satu-satu:
 
 ```
 MONGO_URI = (paste connection string dari step 1)
@@ -86,17 +78,14 @@ NODE_ENV = production
 11. **Di "Root Directory"** tulis: `backend`
 12. **Save**
 
-**Redeploy:**
-13. **Klik tab "Deployments"**
-14. **Klik "Redeploy"**
-15. **Tunggu sampai SUCCESS**
-16. **Copy URL** yang muncul (simpan di notepad!)
+**Redeploy:** 13. **Klik tab "Deployments"** 14. **Klik "Redeploy"** 15. **Tunggu sampai SUCCESS** 16. **Copy URL** yang muncul (simpan di notepad!)
 
 ✅ **SELESAI! Backend sudah online!**
 
 ---
 
 ### STEP 3: Vercel (5 menit)
+
 **Ini untuk frontend - tampilan website**
 
 1. **Buka browser, ketik**: `vercel.com`
@@ -104,9 +93,8 @@ NODE_ENV = production
 3. **Continue with GitHub**
 4. **Import project** `porto-app`
 
-**Configure:**
-5. **Root Directory**: `frontend`
-6. **Environment Variables**:
+**Configure:** 5. **Root Directory**: `frontend` 6. **Environment Variables**:
+
 ```
 NEXT_PUBLIC_API_URL = (URL Railway dari step 2)
 ```
@@ -129,7 +117,7 @@ NEXT_PUBLIC_API_URL = (URL Railway dari step 2)
 
 ## 🆘 KALAU ADA ERROR
 
-**Jangan panik!** 
+**Jangan panik!**
 
 1. **Screenshot error**-nya
 2. **Chat saya** dengan screenshot
@@ -142,6 +130,7 @@ Ingat, deployment itu **SKILL** yang harus dipelajari. Wajar kalau awalnya bingu
 ## 💪 MOTIVASI
 
 Setelah ini selesai, Anda sudah punya:
+
 - ✅ Portfolio website yang LIVE di internet
 - ✅ Skill deployment yang berguna untuk karir
 - ✅ Project yang bisa dipamerkan ke recruiter

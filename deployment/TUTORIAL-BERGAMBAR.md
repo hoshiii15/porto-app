@@ -1,8 +1,9 @@
 # 🎯 Tutorial Deployment SUPER MUDAH - Dengan Gambar
 
 ## ❓ Mengapa Saya Pilih Cara Ini?
+
 - 🚫 TIDAK perlu AWS yang ribet
-- 🚫 TIDAK perlu setup server manual  
+- 🚫 TIDAK perlu setup server manual
 - 🚫 TIDAK perlu konfigurasi SSL
 - ✅ Cukup klik-klik saja
 - ✅ Otomatis dapat HTTPS
@@ -13,6 +14,7 @@
 ## 🔥 LANGKAH 1: MongoDB Atlas (Database)
 
 ### A. Daftar Account
+
 ```
 1. Buka: https://www.mongodb.com/cloud/atlas
 2. Klik tombol hijau "Try Free"
@@ -21,6 +23,7 @@
 ```
 
 ### B. Buat Database
+
 ```
 1. Setelah login, klik "Build a Database"
 2. Pilih "M0 Sandbox" (yang GRATIS)
@@ -31,6 +34,7 @@
 ```
 
 ### C. Buat User Database
+
 ```
 1. Tunggu cluster selesai (2-3 menit)
 2. Akan muncul popup "Security Quickstart"
@@ -41,6 +45,7 @@
 ```
 
 ### D. Setup Network
+
 ```
 1. Di step berikutnya "Where would you like to connect from?"
 2. Pilih "My Local Environment"
@@ -49,6 +54,7 @@
 ```
 
 ### E. Ambil Connection String
+
 ```
 1. Di dashboard, klik "Connect" pada cluster
 2. Pilih "Connect your application"
@@ -63,6 +69,7 @@
 ## 🔥 LANGKAH 2: Railway (Backend)
 
 ### A. Daftar Railway
+
 ```
 1. Buka: https://railway.app
 2. Klik "Start a New Project"
@@ -71,6 +78,7 @@
 ```
 
 ### B. Deploy dari GitHub
+
 ```
 1. Klik "Deploy from GitHub repo"
 2. Pilih repo "porto-app"
@@ -79,6 +87,7 @@
 ```
 
 ### C. Setup Environment Variables
+
 ```
 1. Setelah deploy selesai, klik nama project
 2. Klik tab "Variables" di atas
@@ -104,6 +113,7 @@
 ```
 
 ### D. Set Root Directory
+
 ```
 1. Klik tab "Settings"
 2. Scroll ke "Deploy"
@@ -112,6 +122,7 @@
 ```
 
 ### E. Redeploy
+
 ```
 1. Klik tab "Deployments"
 2. Klik "Redeploy"
@@ -126,6 +137,7 @@
 ## 🔥 LANGKAH 3: Vercel (Frontend)
 
 ### A. Daftar Vercel
+
 ```
 1. Buka: https://vercel.com
 2. Klik "Start Deploying"
@@ -134,6 +146,7 @@
 ```
 
 ### B. Import Project
+
 ```
 1. Klik "Add New..." → "Project"
 2. Cari repo "porto-app"
@@ -141,6 +154,7 @@
 ```
 
 ### C. Configure Project
+
 ```
 1. Di "Configure Project":
    - Framework Preset: Next.js
@@ -157,6 +171,7 @@
 ```
 
 ### D. Tunggu Deploy
+
 ```
 1. Tunggu proses deploy (3-5 menit)
 2. Akan muncul "Congratulations!"
@@ -170,6 +185,7 @@
 ## 🎉 TEST WEBSITE
 
 ### Test Frontend
+
 ```
 1. Buka URL Vercel: https://porto-app-vercel.app
 2. Check apakah website loading
@@ -177,12 +193,14 @@
 ```
 
 ### Test Backend API
+
 ```
 1. Buka: https://railway-url.up.railway.app/api/profile
 2. Harus muncul JSON response
 ```
 
 ### Test Admin Panel
+
 ```
 1. Buka: https://porto-app-vercel.app/admin/register
 2. Daftar akun admin baru
@@ -194,6 +212,7 @@
 ## 🆘 TROUBLESHOOTING
 
 ### Jika Backend Error:
+
 ```
 1. Buka Railway dashboard
 2. Klik project → tab "Deployments"
@@ -203,6 +222,7 @@
 ```
 
 ### Jika Frontend Error:
+
 ```
 1. Buka Vercel dashboard
 2. Klik project → tab "Functions"
@@ -211,6 +231,7 @@
 ```
 
 ### Jika Database Error:
+
 ```
 1. Check connection string MongoDB
 2. Pastikan password benar
